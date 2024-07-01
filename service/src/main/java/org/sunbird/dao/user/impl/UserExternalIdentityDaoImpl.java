@@ -14,6 +14,7 @@ import org.sunbird.keys.JsonKey;
 import org.sunbird.logging.LoggerUtil;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
+import org.sunbird.util.ProjectUtil;
 
 public class UserExternalIdentityDaoImpl implements UserExternalIdentityDao {
 
@@ -49,7 +50,7 @@ public class UserExternalIdentityDaoImpl implements UserExternalIdentityDao {
     Map<String, Object> req = new HashMap<>();
     req.put(JsonKey.USER_ID, userId);
     Response response =
-        cassandraOperation.getRecordById(JsonKey.SUNBIRD, JsonKey.USR_EXT_IDNT_TABLE, req, context);
+        cassandraOperation.getRecordById(ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYSPACE), JsonKey.USR_EXT_IDNT_TABLE, req, context);
     if (null != response && null != response.getResult()) {
       dbResExternalIds = (List<Map<String, String>>) response.getResult().get(JsonKey.RESPONSE);
     }
@@ -64,10 +65,27 @@ public class UserExternalIdentityDaoImpl implements UserExternalIdentityDao {
     req.put(JsonKey.USER_ID, userId);
     Response response =
         cassandraOperation.getRecordById(
-            JsonKey.SUNBIRD, JsonKey.USER_DECLARATION_DB, req, context);
+                ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYSPACE), JsonKey.USER_DECLARATION_DB, req, context);
     if (null != response && null != response.getResult()) {
       dbResExternalIds = (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE);
     }
     return dbResExternalIds;
+  }
+
+  @Override
+  public void deleteUserExternalId(Map<String, String> map, RequestContext context) {
+    map.remove(JsonKey.LAST_UPDATED_BY);
+    map.remove(JsonKey.CREATED_BY);
+    map.remove(JsonKey.LAST_UPDATED_ON);
+    map.remove(JsonKey.CREATED_ON);
+    map.remove(JsonKey.ORIGINAL_EXTERNAL_ID);
+    map.remove(JsonKey.ORIGINAL_ID_TYPE);
+    map.remove(JsonKey.ORIGINAL_PROVIDER);
+    map.remove(JsonKey.USER_ID);
+    cassandraOperation.deleteRecord(
+        ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYSPACE),
+        JsonKey.USR_EXT_IDNT_TABLE,
+        map,
+        context);
   }
 }

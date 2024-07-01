@@ -8,13 +8,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,7 +67,8 @@ public class ProjectUtil {
 
   public enum Status {
     ACTIVE(1),
-    INACTIVE(0);
+    INACTIVE(0),
+    DELETED(2);
 
     private int value;
 
@@ -261,11 +256,11 @@ public class ProjectUtil {
    * @author Manzarul
    */
   public enum EsType {
-    user(getConfigValue("user_index_alias")),
-    organisation(getConfigValue("org_index_alias")),
-    usernotes("usernotes"),
-    location("location"),
-    userfeed("userfeed");
+    user(getConfigValue(JsonKey.ES_USER_INDEX_ALIAS)),
+    organisation(getConfigValue(JsonKey.ES_ORG_INDEX_INDEX)),
+    usernotes(getConfigValue(JsonKey.ES_USER_NOTES_INDEX)),
+    location(getConfigValue(JsonKey.ES_LOCATION_INDEX)),
+    userfeed(getConfigValue(JsonKey.ES_USER_FEED_INDEX));
 
     private String typeName;
 
@@ -286,21 +281,6 @@ public class ProjectUtil {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSSZ");
     simpleDateFormat.setLenient(false);
     return simpleDateFormat;
-  }
-
-  /** @author Manzarul */
-  public enum AzureContainer {
-    userProfileImg("userprofileimg"),
-    orgImage("orgimg");
-    private String name;
-
-    private AzureContainer(String name) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
   }
 
   public static VelocityContext getContext(Map<String, Object> map) {

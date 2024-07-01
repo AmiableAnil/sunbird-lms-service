@@ -19,7 +19,7 @@ import org.sunbird.response.Response;
 public final class Util {
 
   public static final Map<String, DbInfo> dbInfoMap = new HashMap<>();
-  private static final String KEY_SPACE_NAME = "sunbird";
+  private static final String KEY_SPACE_NAME = ProjectUtil.getConfigValue(JsonKey.SUNBIRD_KEYSPACE);
   private static final CassandraOperation cassandraOperation = ServiceFactory.getInstance();
   private static final DecryptionService decService =
       org.sunbird.datasecurity.impl.ServiceFactory.getDecryptionServiceInstance();
@@ -146,7 +146,6 @@ public final class Util {
     Map<String, Object> user = new HashMap<>();
     user.put("avatar", null);
     user.put("gender", null);
-    user.put("grade", null);
     user.put("language", null);
     user.put("lastLoginTime", null);
     user.put("location", null);
@@ -156,7 +155,6 @@ public final class Util {
     user.put("thumbnail", null);
     user.put("registryId", null);
     user.put("accesscode", null);
-    user.put("subject", null);
     user.put("webPages", null);
     user.put("currentLoginTime", null);
     user.put("password", null);

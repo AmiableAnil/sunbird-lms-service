@@ -6,6 +6,7 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.keycloak.RSATokenVerifier;
@@ -80,6 +81,30 @@ public class KeyCloakServiceImpl implements SSOManager {
     return false;
   }
 
+  @Override
+  public boolean removePII(String userId, RequestContext context) {
+    try {
+      String fedUserId = getFederatedUserId(userId);
+      UserResource userResource =
+          keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
+      UserRepresentation user = userResource.toRepresentation();
+      user.setEmailVerified(false);
+      user.setEmail("");
+      user.setFirstName("");
+      user.setLastName("");
+      user.setEnabled(false);
+      logger.info("KeyCloakServiceImpl::removePII:: userId:: " + fedUserId);
+      userResource.update(user);
+      List userSessions = userResource.getUserSessions();
+      for (Object userSession : userSessions)
+        userSessions.remove(userSession);
+      return true;
+    } catch (Exception e) {
+      logger.error(context, "removePII: Exception occurred: ", e);
+    }
+    return false;
+  }
+
   /**
    * Method to remove the user on basis of user id.
    *
@@ -91,11 +116,14 @@ public class KeyCloakServiceImpl implements SSOManager {
   public String removeUser(Map<String, Object> request, RequestContext context) {
     Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
     String userId = (String) request.get(JsonKey.USER_ID);
+    logger.info("KeycloakServiceImpl:: removeUser:: userId:: " + userId);
     try {
       String fedUserId = getFederatedUserId(userId);
+      logger.info("KeycloakServiceImpl:: removeUser:: fedUserId:: " + fedUserId);
       UserResource resource =
           keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
       if (null != (resource)) {
+        logger.info("KeycloakServiceImpl:: removeUser:: resource:: " + resource.toRepresentation());
         resource.remove();
       }
     } catch (Exception ex) {
@@ -145,15 +173,30 @@ public class KeyCloakServiceImpl implements SSOManager {
   private void makeUserActiveOrInactive(String userId, boolean status, RequestContext context) {
     try {
       String fedUserId = getFederatedUserId(userId);
-      logger.info(context, "makeUserActiveOrInactive: fedration id formed: " + fedUserId);
+      logger.info(context, "makeUserActiveOrInactive: federation id formed: " + fedUserId);
       validateUserId(fedUserId);
+      logger.info(context, "makeUserActiveOrInactive: user validated: ");
       Keycloak keycloak = KeyCloakConnectionProvider.getConnection();
+
+      logger.info(
+          context,
+          "makeUserActiveOrInactive: keycloak: "
+              + keycloak.toString()
+              + " || "
+              + keycloak.serverInfo());
       UserResource resource =
           keycloak.realm(KeyCloakConnectionProvider.SSO_REALM).users().get(fedUserId);
+      logger.info("makeUserActiveOrInactive: resource: " + resource.toString());
       UserRepresentation ur = resource.toRepresentation();
+      logger.info("makeUserActiveOrInactive: ur: " + ur.isEnabled());
       ur.setEnabled(status);
       resource.update(ur);
     } catch (Exception e) {
+      logger.info(
+          "makeUserActiveOrInactive:error occurred while blocking or unblocking user: "
+              + e.getCause()
+              + " || "
+              + e.getMessage());
       logger.error(
           context,
           "makeUserActiveOrInactive:error occurred while blocking or unblocking user: ",

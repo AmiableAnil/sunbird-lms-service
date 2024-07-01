@@ -16,6 +16,8 @@ public final class JsonKey {
   public static final String IS_FORM_VALIDATION_REQUIRED = "isFormValidationRequired";
   public static final String USER_PROFILE_CONFIG_MAP = "userProfileConfigMap";
   public static final String ACCOUNT_NAME = "sunbird_account_name";
+
+  public static final String ACCOUNT_ENDPOINT = "sunbird_account_endpoint";
   public static final String DOWNLOAD_LINK_EXPIRY_TIMEOUT = "download_link_expiry_timeout";
   public static final String ACTION_GROUP = "action_group";
   public static final String ACTION_GROUPS = "actionGroups";
@@ -126,6 +128,7 @@ public final class JsonKey {
   public static final String IS_SELF_DECLARATION = "isSelfDeclaration";
   public static final String IS_SYSTEM_UPLOAD = "isSystemUpload";
   public static final String IS_AUTH_REQ = "isAuthReq";
+  public static final String IS_BLOCKED = "isBlocked";
   public static final String IS_DELETED = "isDeleted";
   public static final String JOB_PROFILE = "jobProfile";
   public static final String LANGUAGE = "language";
@@ -183,6 +186,8 @@ public final class JsonKey {
   public static final String OTP_EMAIL_RESET_PASSWORD_TEMPLATE = "otpEmailResetPasswordTemplate";
   public static final String OTP_PHONE_RESET_PASSWORD_TEMPLATE = "otpPhoneResetPasswordTemplate";
   public static final String VERIFY_PHONE_OTP_TEMPLATE = "verifyPhoneOtpTemplate";
+  public static final String OTP_DELETE_USER_EMAIL_TEMPLATE = "otpEmailDeleteUserTemplate";
+  public static final String OTP_DELETE_USER_TEMPLATE_ID = "otpDeleteUserTemplate";
   public static final String PARAMS = "params";
   public static final String PASSWORD = "password";
 
@@ -294,6 +299,7 @@ public final class JsonKey {
   public static final String URL_ACTION = "url_action";
   public static final String URL_ACTION_ID = "url_action_ids";
   public static final String USER = "user";
+  public static final String USER_OWNERSHIP_TRANSFER = "user_ownership_transfer";
   public static final String USER_ACTION_ROLE = "user_action_role";
   public static final String USER_DB = "user_db";
   public static final String USER_ID = "userId";
@@ -334,8 +340,8 @@ public final class JsonKey {
   public static final String EDIT = "edit";
   public static final String DEFAULT_FRAMEWORK = "defaultFramework";
   public static final String EXTERNAL_ID_PROVIDER = "externalIdProvider";
-  public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME =
-      "sunbird_installation_display_name_for_sms";
+  public static final String SUNBIRD_INSTALLATION_DISPLAY_NAME = "sunbird_installation_display_name_for_sms";
+  public static final String SUNBIRD_SUPPORT_EMAIL = "sunbird_support_email";
   public static final String USR_EXT_IDNT_TABLE = "usr_external_identity";
   public static final String RESPONSE_CODE = "responseCode";
   public static final String OK = "ok";
@@ -400,6 +406,7 @@ public final class JsonKey {
   public static final String RATE_LIMIT_UNIT = "unit";
   public static final String RATE = "rate";
   public static final String INSTALLATION_NAME = "installationName";
+  public static final String SUPPORT_EMAIL = "supportEmail";
   public static final String LOCATION_CODES = "locationCodes";
   public static final String USER_LOCATIONS = "userLocations";
   public static final String USER_ID_TYPE = "userIdType";
@@ -412,8 +419,6 @@ public final class JsonKey {
   public static final String SUNBIRD_GZIP_ENABLE = "sunbird_gzip_enable";
   public static final String SUNBIRD_SYNC_READ_WAIT_TIME = "sunbird_sync_read_wait_time";
   public static final String SUNBIRD_GZIP_SIZE_THRESHOLD = "sunbird_gzip_size_threshold";
-  public static final String ANALYTICS_ACCOUNT_NAME = "sunbird_analytics_blob_account_name";
-  public static final String ANALYTICS_ACCOUNT_KEY = "sunbird_analytics_blob_account_key";
   public static final String SIGNUP_TYPE = "signupType";
   public static final String REQUEST_SOURCE = "source";
 
@@ -591,6 +596,8 @@ public final class JsonKey {
   public static final String STATE_ID = "stateId";
   public static final String BLOCK_USER = "BlockUser";
   public static final String UNBLOCK_USER = "UnblockUser";
+  public static final String DELETE_USER = "DeleteUser";
+  public static final String DELETE_USER_STATUS = "DeleteUserStatus";
   public static final String ROLE_OPERATION = "roleOperation";
   public static final String SCOPE_STR = "scopeString";
   public static final String SUNBIRD_SSO_LB_IP = "sunbird_sso_lb_ip";
@@ -605,8 +612,11 @@ public final class JsonKey {
   public static final String CONTACT_UPDATE_TEMPLATE_ID = "otpContactUpdateTemplate";
   public static final String OTP_CONTACT_UPDATE_TEMPLATE_EMAIL = "otpContactUpdateTemplateEmail";
   public static final String OTP_CONTACT_UPDATE_TEMPLATE_SMS = "otpContactUpdateTemplateSms";
+  public static final String OTP_DELETE_USER_TEMPLATE_SMS = "otpDeleteUserTemplateSms";
   public static final String CONTACT_DETAILS_UPDATE_VERIFICATION_SUBJECT =
       "OTP to edit Diksha Profile";
+  public static final String DELETE_USER_VERIFICATION_SUBJECT =
+      "OTP to proceed with profile deletion.";
   public static final String X_Source = "x-source";
   public static final String IDS = "ids";
   public static final String NOTIFICATIONS = "notifications";
@@ -644,6 +654,28 @@ public final class JsonKey {
   public static final String DATA_SECURITY_POLICY = "dataSecurityPolicy";
   public static final String JOB = "job";
   public static final String USER_PRIVATE_FIELDS = "userPrivateFields";
+
+  // Release 5.4.0 LR-102
+  public static final String SUNBIRD_KEYSPACE = "sunbird_userorg_keyspace";
+  public static final String ES_LOCATION_INDEX = "es_location_index";
+  public static final String ES_USER_FEED_INDEX = "es_user_feed_index";
+  public static final String ES_USER_NOTES_INDEX = "es_user_notes_index";
+  public static final String ES_USER_INDEX_ALIAS = "user_index_alias";
+  public static final String ES_ORG_INDEX_INDEX = "org_index_alias";
+
+  public static final String USER_DELETION_STATUS = "user_deletion_status";
+  public static final String CREDENTIALS_STATUS = "keycloakCredentials";
+  public static final String USER_LOOK_UP_STATUS = "userLookUpTable";
+  public static final String USER_EXTERNAL_ID_STATUS = "userExternalIdTable";
+  public static final String USERS = "users";
+  public static final String USER_TABLE_STATUS = "userTable";
+  public static final String SUGGESTED_USERS = "suggested_users";
+  public static final String DELETE_USER_ACTON = "delete-user";
+  public static final String OBJECT = "object";
+  public static final String EDATA = "edata";
+  public static final String MANAGED_USERS = "managed_users";
+  public static final String USER_DELETION_TOPIC = "user-deletion-broadcast-topic";
+  public static final String USER_DELETION_ROLES = "user-deletion-roles";
 
   private JsonKey() {}
 }
